@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Test Sibers - информация о проекте";
+}
+<div class="row">
+    <h2>Информация о проекте @Model.Name</h2>
+</div>
+<div class="row">
+    <a class="btn btn-info" href="/Project/Edit?id=@Model.Id">Редактировать</a>
+</div>
+<div class="main-info">
+    <div class="row">
+        <div class="col-sm-4"><p><b>Название проекта</b></p></div>
+        <div class="col-sm-8"><p>@Model.Name</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><p><b>Приоритет</b></p></div>
+        <div class="col-sm-8"><p>@Model.Priority</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><p><b>Название компании-заказчика</b></p></div>
+        <div class="col-sm-8"><p>@Model.CompanyCustomer</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><p><b>Название компании-исполнителя</b></p></div>
+        <div class="col-sm-8"><p>@Model.CompanyExecutor</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><p><b>Руководитель проекта</b></p></div>
+        <div class="col-sm-8">
+            @if (Model.ProjectManager != null)
+            {
+                <p>
+                    @Model.ProjectManager.Surname @Model.ProjectManager.FirstName @Model.ProjectManager.Patronymic, @Model.ProjectManager.Email
+                </p>
+            }
+            else
+            {
+                <p>Руководитель проекта отсутствует</p>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><p><b>Дата начала</b></p></div>
+        <div class="col-sm-8"><p>@Model.StartDate.ToString("d")</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"><p><b>Дата окончания</b></p></div>
+        <div class="col-sm-8"><p>@Model.EndDate.ToString("d")</p></div>
+    </div>
+</div>
+
+<h3>Исполнители проекта</h3>
+
+@using (Html.BeginForm("Bind", "Project", FormMethod.Post))
+{
+    <input type="hidden" value="@Model.Id" id="projectId" name="projectId" />
+        <div class="form-group row">
+            <div class="col-2">
+                <label for="referal" class="col-form-label">Добавить сотрудника</label>
+            </div>
+            <div class="col-3">
+                @Html.Hidden("ProjectManagerId", "")
+                <input type="text" id="referal" name="referal" placeholder="" value="" class="who" autocomplete="off">
+                <a href="#" id="pickAnother" style="display: none;">Выбрать другого...</a>
+                <ul class="search_result"></ul>
+            </div>
+            <div class="col-2">
+                <input type="submit" class="btn btn-success" value="Добавить" />
+            </div>
+        </div>
+
+}
+@if (ViewBag.employees.Count != 0)
+{
+    <table class="table table-center">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Id</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>E-Mail</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in ViewBag.employees)
+                {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Surname</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.Patronymic</td>
+                    <td>@item.Email</td>
+                    <td align="center"><a href="~/Project/UnBind?projectId=@Model.Id&employeeId=@item.Id" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center col-sm-12" style="padding: 30px 0;">
+        <h4>В этом проекте еще нет исполнителей</h4>
+    </div>
+}
+<div class="row">
+    <div class="col-sm-4"><p><b>Комментарий</b></p></div>
+    <div class="col-sm-8"><p>@Model.Caption</p></div>
+</div>

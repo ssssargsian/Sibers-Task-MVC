@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Управление сотрудниками";
+}
+
+<h1>Управление сотрудниками</h1>
+<div>
+    @Html.ActionLink("Добавить нового сотрудника", "NewEmployee", "Employee", null, new { @class = "btn btn-lg btn-success" })
+</div>
+@if (Model.Count != 0)
+{
+    <table class="table table-center">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Id</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>E-Mail</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Surname</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.Patronymic</td>
+                    <td>@item.Email</td>
+                    <td align="center"><a href="~/Employee/Edit?id=@item.Id" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                    <td align="center"><a href="~/Employee/Delete?id=@item.Id" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+<div class="text-center" style="margin-top: 100px;">
+    <h4>Сотрудников еще нет.<br/>Создайте записи о сотрудниках чтобы увидеть их здесь.</h4>
+</div>
+}

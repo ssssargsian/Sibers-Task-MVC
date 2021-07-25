@@ -1,0 +1,95 @@
+﻿@using Services.Entities
+
+@{
+    ViewBag.Title = "Test Sibers - Управление проектами";
+}
+
+<h1>Управление проектами</h1>
+<div>
+    @Html.ActionLink("Добавить новый проект", "NewProject", "Project", null, new { @class = "btn btn-lg btn-success" })
+</div>
+@using (Html.BeginForm())
+{
+    <div class="form-group row">
+        <label class="col-3 col-form-label">Фильтр по названию проекта, компании-заказчика и т.п.</label>
+        <div class="col-6">
+            @Html.TextBox("searchFilter", "", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3 col-form-label">Фильтр по датам (дата начала и дата окончания)</label>
+        <div class="col-3">
+            <input type="date" class="form-control" value="" id="StartDate" placeholder="Дата начала" name="startDate">
+        </div>
+        <div class="col-3">
+            <input type="date" class="form-control" value="" id="endDate" placeholder="Дата окончания" name="endDate">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-3 col-form-label">Фильтр по приоритету</label>
+        <div class="col-3">
+            @Html.TextBox("fromPrior", "", new { placeholder = "От", @class = "form-control" })
+        </div>
+        
+        <div class="col-3">
+            @Html.TextBox("toPrior", "", new { placeholder = "До", @class = "form-control" })
+        </div>
+    </div>
+
+
+    <p>
+        <input type="submit" value="Фильтр" class="btn btn-info " />
+        <a href="~/Project" class="btn btn-dark">Сбросить</a>
+    </p>
+}
+@if (Model.Count != 0)
+{
+    <table class="table table-center">
+        <thead class="thead-inverse">
+            <tr>
+                <th>@Html.ActionLink("Id", "Index", new { sort = SortProject.Id })</th>
+                <th>@Html.ActionLink("Название проекта", "Index", new { sort = SortProject.Name })</th>
+                <th>@Html.ActionLink("Название компании-заказчика", "Index", new { sort = SortProject.Company })</th>
+                <th>@Html.ActionLink("Название компании-исполнителя", "Index", new { sort = SortProject.Executor })</th>
+                <th>@Html.ActionLink("Руководитель проекта", "Index", new { sort = SortProject.FullNameProjectManager })</th>
+                <th>@Html.ActionLink("Приоритет", "Index", new { sort = SortProject.Priority })</th>
+                <th>@Html.ActionLink("Дата начала", "Index", new { sort = SortProject.StartDate })</th>
+                <th>@Html.ActionLink("Дата окончания", "Index", new { sort = SortProject.EndDate })</th>
+                <th>Просмотр</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Name</td>
+                    <td>@item.CompanyCustomer</td>
+                    <td>@item.CompanyExecutor</td>
+                    @if (!string.IsNullOrEmpty(item.FullNameProjectManager))
+                    {
+                        <td>@item.FullNameProjectManager</td>
+                    }
+                    else
+                    {
+                        <td>Отсутствует</td>
+                    }
+                    <td>@item.Priority</td>
+                    <td>@item.StartDate.ToString("d")</td>
+                    <td>@item.EndDate.Date.ToString("d")</td>
+                    <td align="center"><a href="~/Project/FullProject?id=@item.Id" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                    <td align="center"><a href="~/Project/Edit?id=@item.Id" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                    <td align="center"><a href="~/Project/Delete?id=@item.Id" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                </tr>
+            }
+    </table>
+}
+else
+{
+    <div class="text-center" style="margin-top: 100px;">
+        <h4>Проектов еще нет.<br />Создайте новый проект чтобы увидеть его здесь.</h4>
+    </div>
+}

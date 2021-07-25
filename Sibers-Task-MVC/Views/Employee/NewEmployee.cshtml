@@ -1,0 +1,49 @@
+﻿@model TestSibers.Models.EmployeeModel
+@{
+    ViewBag.Title = "Test Sibers - Добавить нового сотрудника";
+}
+
+<h2>Добавить нового сотрудника</h2>
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+{
+    <div class="form-group row">
+        <label for="Surname" class="col-2 col-form-label">Фамилия</label>
+        <div class="col-10">
+            @Html.TextBox("Surname", "", new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="FirstName" class="col-2 col-form-label">Имя</label>
+        <div class="col-10">
+            @Html.TextBox("FirstName", "", new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger"})
+
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Patronymic" class="col-2 col-form-label">Отчество</label>
+        <div class="col-10">
+            @Html.TextBox("Patronymic", "", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Email" class="col-2 col-form-label">E-Mail</label>
+        <div class="col-10">
+            @Html.TextBox("Email", "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Добавить</button>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
